@@ -1,0 +1,15 @@
+{
+    "name": "smtuc.freemind",
+    "description": "Unofficial SMTUC application for Ubuntu Phone",
+    "architecture": "@CLICK_ARCH@",
+    "title": "SMTUC",
+    "hooks": {
+        "smtuc": {
+            "apparmor": "smtuc/smtuc.apparmor",
+            "desktop": "smtuc/smtuc.desktop"
+        }
+    },
+    "version": "1.0",
+    "maintainer": "Carlos Pais <freemind@live.com.pt>",
+    "framework": "ubuntu-sdk-15.04"
+}

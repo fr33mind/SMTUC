@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=SMTUC
+Exec=qmlscene $@ smtuc/Main.qml
+Icon=smtuc/smtuc.png
+Terminal=false
+Type=Application
+X-Ubuntu-Touch=true
+
+Name[pt]=SMTUC
