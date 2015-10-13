@@ -49,6 +49,7 @@ Page {
                         text += "\n\n" + total_price;
 
                     var dialog = PopupUtils.open(popupComponent);
+                    dialog.title = name;
                     dialog.message = text;
                 }
         }
