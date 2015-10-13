@@ -454,8 +454,8 @@ void DatabaseUpdaterWorker::loadOutlet(const QJsonValue & val, QSqlDatabase& db)
                   freguesia, coordinates, zone, official) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
     query.addBindValue(outlet.value("p_nome").toString());
-    query.addBindValue(outlet.value("p_hora_normal").toString());
-    query.addBindValue(outlet.value("p_hora_fds").toString());
+    query.addBindValue(outlet.value("p_hora_normal").toString().trimmed());
+    query.addBindValue(outlet.value("p_hora_fds").toString().trimmed());
     query.addBindValue(outlet.value("p_morada").toString());
     query.addBindValue(outlet.value("p_telefone").toString());
     query.addBindValue(outlet.value("p_freguesia").toString());
