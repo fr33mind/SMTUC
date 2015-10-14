@@ -113,6 +113,14 @@ MainView {
                         id: ticketsPage
                     }
                 }
+
+                Tab {
+                    id: outletsTab
+                    title: i18n.tr("Outlets")
+                    page: OutletsPage {
+                        id: outletsPage
+                    }
+                }
             }
         }
 

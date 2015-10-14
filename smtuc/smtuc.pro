@@ -12,7 +12,10 @@ QML_FILES += Main.qml \
     ui/RoutePage.qml \
     ui/StopsPopup.qml \
     ui/RoutesPage.qml \
-    ui/TicketsPage.qml
+    ui/TicketsPage.qml \
+    ui/OutletsPage.qml \
+    ui/OutletPopup.qml \
+    ui/CategoryItem.qml
 
 QML_FILES += $$files(*.qml,true) \
              $$files(*.js,true)
