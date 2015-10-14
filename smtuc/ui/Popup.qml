@@ -11,7 +11,7 @@ PopupBase {
     property string message: ""
     property real backgroundOpacity: 0.4
     property string backgroundColor: "black"
-    property int availableHeight: contentRect.availableHeight
+    property alias availableHeight: contentRect.availableHeight
     default property alias contents: containerItem.data
 
     Rectangle {
@@ -23,7 +23,6 @@ PopupBase {
 
     Rectangle {
         id: contentRect
-        //anchors.fill: parent
         anchors.margins: units.gu(2)
         anchors.centerIn: parent
         height: childrenRect.height
@@ -35,6 +34,9 @@ PopupBase {
 
         function calcAvailableHeight()
         {
+            if (! popup.height)
+                return undefined;
+
             var usedSpace = anchors.topMargin + anchors.bottomMargin + titleLabel.height +  closeBtn.height + column.emptySpace;
             return popup.height - usedSpace;
         }
@@ -49,30 +51,34 @@ PopupBase {
             Label {
                 id: titleLabel
                 text: popup.title
-                width: parent.width
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.leftMargin: units.gu(1)
-                anchors.rightMargin: units.gu(1)
+                anchors.horizontalCenter: parent.horizontalCenter
+                width: parent.width - units.gu(2)
                 wrapMode: Text.WordWrap
-                height: implicitHeight + units.gu(1)
+                height: implicitHeight + units.gu(2)
                 verticalAlignment: Text.AlignVCenter
                 font.weight: Font.Bold
+                font.pixelSize: FontUtils.sizeToPixels("large")
             }
 
             Item {
                 id: containerItem
-                width: parent.width
-                height: childrenRect.height > popup.availableHeight ? popup.availableHeight : childrenRect.height
+                height: childrenRect.height > contentRect.availableHeight ? contentRect.availableHeight : childrenRect.height
+                anchors.horizontalCenter: parent.horizontalCenter
+                width: parent.width - units.gu(2)
                 clip: true
             }
 
-            Button {
-                id: closeBtn
-                text: i18n.tr("OK")
-                width: parent.width / 2
-                anchors.horizontalCenter: parent.horizontalCenter
-                onClicked: PopupUtils.close(popup)
+            Item {
+                width: parent.width
+                height: closeBtn.height + units.gu(1)
+
+                Button {
+                    id: closeBtn
+                    text: i18n.tr("OK")
+                    width: parent.width / 2
+                    anchors.centerIn: parent
+                    onClicked: PopupUtils.close(popup)
+                }
             }
         }
     }
