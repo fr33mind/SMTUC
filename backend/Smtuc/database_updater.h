@@ -30,6 +30,7 @@ public:
     bool isFinished() const;
 
 signals:
+    void started();
     void progressChanged();
     void finished();
 

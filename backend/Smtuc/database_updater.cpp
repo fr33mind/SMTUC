@@ -52,6 +52,7 @@ void DatabaseUpdater::update()
     connect(mWorker, SIGNAL(finished()), mWorkerThread, SLOT(quit()));
     connect(mWorkerThread, SIGNAL(started()), mWorker, SLOT(start()));
     mWorkerThread->start();
+    emit started();
 }
 
 double DatabaseUpdater::progress() const
