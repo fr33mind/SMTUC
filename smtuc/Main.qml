@@ -9,11 +9,11 @@ MainView {
     id: mainView
     width: units.gu(40)
     height: units.gu(50)
+    Component.onCompleted: needsUpdate() ? PopupUtils.open(updateWarnPopover) : null
 
     function needsUpdate()
     {
-        //FIXME: Fix database settings
-        var updatedAt = settingsModel.recordField(0, "updatedAt"),
+        var updatedAt = settings.value("updatedAt", null),
             maxTimePassed = 1000 * 3600 * 24 * 30, //1 month in milliseconds
             timePassed = maxTimePassed,
             now = new Date();
@@ -31,58 +31,17 @@ MainView {
         databaseName: "smtuc/smtuc.sqlite"
     }
 
-    DatabaseUpdater {
-        id: databaseUpdater
+    Settings {
+        id: settings
         database: database
-    }
-
-   SqlQueryModel {
-       id: settingsModel
-       query: "SELECT * FROM settings"
-   }
-
-    Component {
-        id: updateProgress
-
-        Dialog {
-            id: updatePopover
-            title: i18n.tr("Updating...")
-            property bool finished: databaseUpdater.finished
-
-            Component.onCompleted: {
-                databaseUpdater.update()
-            }
-
-            ProgressBar {
-                value: databaseUpdater.progress
-            }
-
-            onFinishedChanged: {
-                if (finished)
-                    PopupUtils.close(updatePopover)
-            }
-        }
+        autoSave: true
     }
 
     Component {
-        id: updateDialog
-
-        Dialog {
-            id: dialog
-            title: i18n.tr("Update")
-            text: i18n.tr("The database may be out of date. Do you want to update it?")
-            Button {
-                text: "cancel"
-                onClicked: PopupUtils.close(dialog)
-            }
-            Button {
-                text: "update"
-                color: UbuntuColors.orange
-                onClicked: {
-                    PopupUtils.close(dialog)
-                    PopupUtils.open(updateProgress)
-                }
-            }
+        id: updateWarnPopover
+        MessagePopup {
+            title:   i18n.tr("Update")
+            message: i18n.tr("The local database is old and may be out of date. Please consider updating it.")
         }
     }
 
@@ -90,8 +49,6 @@ MainView {
         id: pageStack
         Component.onCompleted: {
             push(rootComponent);
-            if (needsUpdate())
-                PopupUtils.open(updateDialog)
         }
 
         Component {
