@@ -1,5 +1,6 @@
 import QtQuick 2.2
 import Ubuntu.Components 1.2
+import Ubuntu.Components.Popups 1.0
 import Ubuntu.Components.ListItems 1.0 as ListItem
 import QtQuick.Layouts 1.1
 import Smtuc 1.0
@@ -94,15 +95,49 @@ Page {
         onTriggered: routesPage.search(routesPage.filter)
     }
 
+    Component {
+        id: errorPopupComponent
+
+        MessagePopup {
+            id: errorPopup
+            title: i18n.tr("Error")
+            message: ""
+        }
+    }
+
+    Component {
+        id: updateDialogComponent
+        UpdateDialog {
+            id: updateDialog
+
+            onClosed: {
+                if (updateDialog.error) {
+                    var popup = PopupUtils.open(errorPopupComponent);
+                    popup.message = updateDialog.error;
+                }
+            }
+        }
+    }
+
     state: "default"
     states: [
         PageHeadState {
             name: "default"
             head: routesPage.head
-            actions: Action {
-                iconName: "search"
-                onTriggered: routesPage.state = "search"
-            }
+            actions: [
+                Action {
+                    iconName: "reload"
+                    text: i18n.tr("Update")
+                    onTriggered: {
+                        PopupUtils.open(updateDialogComponent)
+                    }
+                },
+                Action {
+                    iconName: "search"
+                    text: i18n.tr("Search")
+                    onTriggered: routesPage.state = "search"
+                }
+            ]
         },
         PageHeadState {
             id: headerState
