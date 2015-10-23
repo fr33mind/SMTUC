@@ -15,7 +15,8 @@ QML_FILES += Main.qml \
     ui/TicketsPage.qml \
     ui/OutletsPage.qml \
     ui/OutletPopup.qml \
-    ui/CategoryItem.qml
+    ui/CategoryItem.qml \
+    ui/UpdateDialog.qml
 
 QML_FILES += $$files(*.qml,true) \
              $$files(*.js,true)
