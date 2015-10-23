@@ -17,20 +17,25 @@ public:
     QList<QUrl> urls() const;
     bool hasUrl(const QUrl&) const;
     QByteArray data(const QUrl&);
-    void start();
+    bool start();
     void clear();
+    QNetworkAccessManager* networkAccessManager() const;
+    bool hasErrors() const;
 
 signals:
     void finished();
     void replyFinished(QNetworkReply*);
+    void replyError(QNetworkReply*);
 
 public slots:
 
 private slots:
     void onReplyFinished(QNetworkReply*);
+    void onReplyError(QNetworkReply*);
 
 private:
     QList<QUrl> mQueuedUrls;
+    QList<QUrl> mErrorUrls;
     QList<QUrl> mFinishedUrls;
     int mFinishedCount;
     QNetworkAccessManager* mNetworkManager;

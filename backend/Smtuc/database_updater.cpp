@@ -48,6 +48,7 @@ void DatabaseUpdater::update()
     mWorker = new DatabaseUpdaterWorker(mDatabase);
     mWorker->moveToThread(mWorkerThread);
     connect(mWorker, SIGNAL(progressChanged()), this, SIGNAL(progressChanged()));
+    connect(mWorker, SIGNAL(error(const QString&)), this, SIGNAL(error(const QString&)));
     connect(mWorkerThread, SIGNAL(finished()), this, SIGNAL(finished()));
     connect(mWorker, SIGNAL(finished()), mWorkerThread, SLOT(quit()));
     connect(mWorkerThread, SIGNAL(started()), mWorker, SLOT(start()));

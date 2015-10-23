@@ -18,6 +18,8 @@
 #include <QRegularExpression>
 #include <QDateTime>
 
+#include "settings.h"
+
 DatabaseUpdaterWorker::DatabaseUpdaterWorker(Database* db, QObject *parent) :
     QObject(parent)
 {
@@ -25,6 +27,7 @@ DatabaseUpdaterWorker::DatabaseUpdaterWorker(Database* db, QObject *parent) :
     mDatabase = db;
     mQueuedTaskCount = 0;
     mCompletedTaskCount = 0;
+    connect(this, SIGNAL(error(const QString&)), this, SIGNAL(finished()));
 }
 
 DatabaseUpdaterWorker::~DatabaseUpdaterWorker()
@@ -467,11 +470,19 @@ void DatabaseUpdaterWorker::loadOutlet(const QJsonValue & val, QSqlDatabase& db)
 
 void DatabaseUpdaterWorker::load()
 {
+    bool ticketsError = false;
     if (! mFileDownloader || ! mDatabase)
         return;
 
     if (! hasTicketPrices()) {
-        downloadTicketPrices();
+        bool started = downloadTicketPrices();
+        ticketsError = ! started;
+        if (started)
+            return;
+    }
+
+    if (mFileDownloader->hasErrors() || ticketsError) {
+        emit error(tr("Error transfering files."));
         return;
     }
 
@@ -507,8 +518,9 @@ void DatabaseUpdaterWorker::load()
     loadOutlets(data, db);
     taskComplete();
 
-    //QDateTime today = QDateTime::currentDateTimeUtc();
-    //db.exec("UPDATE settings set '"+today.toString(Qt::ISODate)+"' where name = 'updatedAt' ");
+    QDateTime today = QDateTime::currentDateTimeUtc();
+    Settings settings(mDatabase);
+    settings.setValue("updatedAt", today.toString(Qt::ISODate));
 
     mFileDownloader->deleteLater();
     mFileDownloader = 0;
@@ -546,8 +558,9 @@ void DatabaseUpdaterWorker::start()
     mFileDownloader->addUrl(QUrl(ROUTE_TIMES_URL));
     mFileDownloader->addUrl(QUrl(TICKETS_URL));
     mFileDownloader->addUrl(QUrl(OUTLETS_URL));
-    mFileDownloader->start();
-    load();
+    bool started = mFileDownloader->start();
+    if (! started)
+        emit error(tr("Network not available."));
 }
 
 double DatabaseUpdaterWorker::progress() const
@@ -573,16 +586,19 @@ void DatabaseUpdaterWorker::setStatusMessage(const QString & msg)
     emit statusMessageChanged();
 }
 
-void DatabaseUpdaterWorker::downloadTicketPrices()
+bool DatabaseUpdaterWorker::downloadTicketPrices()
 {
     if (! mFileDownloader)
-        return;
+        return false;
 
     qDebug() << "Downloading ticket prices...";
     QByteArray data = mFileDownloader->data(QUrl(TICKETS_URL));
+    if (data.isEmpty())
+        return false;
+
     QJsonDocument doc = QJsonDocument::fromJson(data);
     if (! doc.isArray())
-        return;
+        return false;
 
     QJsonArray tickets = doc.array();
     QString url;
@@ -591,7 +607,10 @@ void DatabaseUpdaterWorker::downloadTicketPrices()
         url = QString(TICKET_PRICES_URL).arg(i);
         mFileDownloader->addUrl(QUrl(url));
     }
-    mFileDownloader->start();
+    bool started = mFileDownloader->start();
+    if (! started)
+        emit error(tr("Network not available."));
+    return started;
 }
 
 bool DatabaseUpdaterWorker::hasTicketPrices() const

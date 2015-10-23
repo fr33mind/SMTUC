@@ -42,6 +42,7 @@ signals:
     void progressChanged();
     void finished();
     void statusMessageChanged();
+    void error(const QString&);
 
 private slots:
     void load();
@@ -70,7 +71,7 @@ private:
     void loadTicketPrices(int, QSqlDatabase&);
     void loadTicketPrice(const QJsonValue&, QSqlDatabase&);
     bool hasTicketPrices() const;
-    void downloadTicketPrices();
+    bool downloadTicketPrices();
     void downloadOutlets();
     void loadOutlets(const QByteArray&, QSqlDatabase&);
     void loadOutlet(const QJsonValue&, QSqlDatabase&);

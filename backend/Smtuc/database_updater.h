@@ -33,6 +33,7 @@ signals:
     void started();
     void progressChanged();
     void finished();
+    void error(const QString& error);
 
 public slots:
 

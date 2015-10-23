@@ -61,11 +61,16 @@ QByteArray FileDownloader::data(const QUrl & url)
     return QByteArray();
 }
 
-void FileDownloader::start()
+bool FileDownloader::start()
 {
+    if (mNetworkManager->networkAccessible() != QNetworkAccessManager::Accessible)
+        return false;
+
     for(int i=0; i < mQueuedUrls.size(); i++) {
         mNetworkManager->get(QNetworkRequest(mQueuedUrls.at(i)));
     }
+
+    return true;
 }
 
 void FileDownloader::onReplyFinished(QNetworkReply * reply)
@@ -73,6 +78,11 @@ void FileDownloader::onReplyFinished(QNetworkReply * reply)
     if (mQueuedUrls.contains(reply->url())) {
         mQueuedUrls.removeOne(reply->url());
         mFinishedUrls.append(reply->url());
+    }
+
+    if (reply->error() != QNetworkReply::NoError) {
+        mErrorUrls.append(reply->url());
+        emit replyError(reply);
     }
 
     emit replyFinished(reply);
@@ -85,4 +95,14 @@ bool FileDownloader::hasUrl(const QUrl& url) const
 {
     QList<QUrl> urls = this->urls();
     return urls.contains(url);
+}
+
+QNetworkAccessManager* FileDownloader::networkAccessManager() const
+{
+    return mNetworkManager;
+}
+
+bool FileDownloader::hasErrors() const
+{
+    return !mErrorUrls.isEmpty();
 }
