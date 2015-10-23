@@ -4,6 +4,7 @@
 #include "database.h"
 #include "sqlquerymodel.h"
 #include "database_updater.h"
+#include "settings.h"
 
 void BackendPlugin::registerTypes(const char *uri)
 {
@@ -12,6 +13,7 @@ void BackendPlugin::registerTypes(const char *uri)
     qmlRegisterType<Database>(uri, 1, 0, "Database");
     qmlRegisterType<DatabaseUpdater>(uri, 1, 0, "DatabaseUpdater");
     qmlRegisterType<SqlQueryModel>(uri, 1, 0, "SqlQueryModel");
+    qmlRegisterType<Settings>(uri, 1, 0, "Settings");
 }
 
 void BackendPlugin::initializeEngine(QQmlEngine *engine, const char *uri)
