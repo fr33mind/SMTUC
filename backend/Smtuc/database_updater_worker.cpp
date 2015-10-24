@@ -231,6 +231,7 @@ void DatabaseUpdaterWorker::loadRouteTimes(const QJsonObject& schedule, QSqlData
     QString time_var("tempos%1");
     QSqlQuery query;
     QString obs;
+    QString days_desc;
 
     for(int i=0; i < 3; i++) {
         id_day = i + 1;
@@ -238,6 +239,13 @@ void DatabaseUpdaterWorker::loadRouteTimes(const QJsonObject& schedule, QSqlData
             break;
 
         times = parseTimes(schedule.value(time_var.arg(id_day)));
+
+        if (id_day == 1) {
+            days_desc = schedule.value("descr_dias1").toString().trimmed().toLower();
+            if (days_desc == "dias de feira dos 7 e 23")
+                id_day = 4;
+        }
+
         for(int j=0; j < times.size(); j++) {
             query = QSqlQuery("", db);
             query.prepare("INSERT INTO route_times (time, id_route, id_stop, id_day, id_season, obs, id_schedule)\
