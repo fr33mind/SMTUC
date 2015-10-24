@@ -10,7 +10,7 @@ Page {
     title: "Routes"
     flickable: null
 
-    property string filter: searchInput.text
+    property string filter: searchInput.displayText
     property string activeFilter: ""
     property var filteredIds: []
     property int viewSelected: head.sections.selectedIndex
@@ -147,13 +147,17 @@ Page {
                 id: leaveSearchAction
                 text: "back"
                 iconName: "back"
-                onTriggered: routesPage.state = "default"
+                onTriggered: {
+                    routesPage.state = "default"
+                    searchInput.text = "";
+                }
             }
             contents: TextField {
                     id: searchInput
                     width: parent ? parent.width - units.gu(1) : undefined
                     placeholderText: i18n.tr("Search...")
-                    onTextChanged: searchTimer.restart()
+                    onDisplayTextChanged: searchTimer.restart();
+                    onVisibleChanged: visible ? forceActiveFocus() : null;
                 }
             }
     ]
