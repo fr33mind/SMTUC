@@ -31,6 +31,8 @@ protected:
 
 private:
     QSqlDatabase mSqlDatabase;
+
+    QString setupDatabase(const QString&);
 };
 
 #endif // MYTYPE_H

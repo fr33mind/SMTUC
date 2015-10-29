@@ -7,6 +7,7 @@
 #include <QDebug>
 #include <QDir>
 #include <QSqlDriver>
+#include <QStandardPaths>
 
 static Database* mInstance = 0;
 static int mRefCount = 0;
@@ -18,9 +19,6 @@ Database::Database(QObject *parent) :
     if (! db.isValid())
         db = QSqlDatabase::addDatabase("QSQLITE");
     mSqlDatabase = db;
-    if (mSqlDatabase.isValid() && ! mSqlDatabase.isOpen())
-        mSqlDatabase.open();
-
     mRefCount++;
     //mInstance = this;
 }
@@ -56,8 +54,8 @@ QString Database::test()
 
 void Database::setDatabaseName(const QString & name)
 {
-    qDebug() << "set name " << name;
-    mSqlDatabase.setDatabaseName(name);
+    QString dbname = setupDatabase(name);
+    mSqlDatabase.setDatabaseName(dbname);
     mSqlDatabase.open();
 }
 
@@ -82,4 +80,28 @@ QVariant Database::exec(const QString & q)
    QSqlQuery query = mSqlDatabase.exec(q);
    QSqlError error = query.lastError();
    return ! error.isValid();
+}
+
+QString Database::setupDatabase(const QString & name)
+{
+    QFileInfo info(name);
+    QString destFile;
+    QString path;
+    QDir dir;
+    bool ok;
+
+    path = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+    dir = QDir(path);
+    destFile = dir.absoluteFilePath(info.fileName());
+    if (QFile::exists(destFile))
+        return destFile;
+
+    if (! dir.exists())
+        dir.mkpath(".");
+
+    ok = QFile::copy(name, destFile);
+    if (ok)
+        return destFile;
+
+    return name;
 }
