@@ -7,6 +7,7 @@ import "ui"
 
 MainView {
     id: mainView
+    applicationName: "smtuc.freemind"
     width: units.gu(40)
     height: units.gu(50)
     Component.onCompleted: needsUpdate() ? PopupUtils.open(updateWarnPopover) : null
