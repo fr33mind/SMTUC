@@ -3,8 +3,8 @@ TARGET = smtuc
 
 RESOURCES += smtuc.qrc
 
-QML_FILES += Main.qml \
-    ui/StopsPopup.qml \
+QML_FILES += Main.qml
+UI_FILES +=  ui/StopsPopup.qml \
     ui/TicketsPage.qml \
     ui/Popup.qml \
     ui/MessagePopup.qml \
@@ -49,5 +49,8 @@ qml_files.files += $${QML_FILES}
 config_files.path = /smtuc
 config_files.files += $${CONF_FILES}
 
-INSTALLS+=config_files qml_files db_file
+ui_files.path = /smtuc/ui
+ui_files.files += $${UI_FILES}
+
+INSTALLS+=config_files qml_files db_file ui_files
 
