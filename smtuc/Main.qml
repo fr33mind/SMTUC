@@ -79,6 +79,14 @@ MainView {
                         id: outletsPage
                     }
                 }
+
+                Tab {
+                    id: aboutTab
+                    title: i18n.tr("About")
+                    page: AboutPage {
+                        id: aboutPage
+                    }
+                }
             }
         }
 

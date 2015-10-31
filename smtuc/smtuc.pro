@@ -16,7 +16,8 @@ UI_FILES +=  ui/StopsPopup.qml \
     ui/OutletsPage.qml \
     ui/OutletPopup.qml \
     ui/CategoryItem.qml \
-    ui/UpdateDialog.qml
+    ui/UpdateDialog.qml \
+    ui/AboutPage.qml
 
 QML_FILES += $$files(*.qml,true) \
              $$files(*.js,true)
