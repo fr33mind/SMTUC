@@ -20,6 +20,8 @@ Database* SqlQueryModel::database()
 void SqlQueryModel::setDatabase(Database* db)
 {
     mDatabase = db;
+    if (mDatabase)
+        connect(mDatabase, SIGNAL(destroyed()), this, SLOT(onDatabaseDestroyed()));
     if (! mQuery.isEmpty())
         setQuery(mQuery);
 }
@@ -106,4 +108,9 @@ QVariantMap SqlQueryModel::rowDataMap(int row) const
     for(int i=0; i < record.count(); i++)
         data.insert(record.fieldName(i), record.value(i));
     return data;
+}
+
+void SqlQueryModel::onDatabaseDestroyed()
+{
+    mDatabase = 0;
 }

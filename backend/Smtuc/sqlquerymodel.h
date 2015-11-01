@@ -26,7 +26,8 @@ signals:
     void rowCountChanged();
     void queryChanged();
 
-public slots:
+private slots:
+    void onDatabaseDestroyed();
 
 protected:
     Database* database();
