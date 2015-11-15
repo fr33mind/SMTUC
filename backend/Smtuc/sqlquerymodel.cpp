@@ -9,7 +9,7 @@
 SqlQueryModel::SqlQueryModel(QObject *parent) :
     QSqlQueryModel(parent)
 {
-    mDatabase = Database::current();
+    mDatabase = 0;
 }
 
 Database* SqlQueryModel::database()
@@ -19,9 +19,15 @@ Database* SqlQueryModel::database()
 
 void SqlQueryModel::setDatabase(Database* db)
 {
+    if (mDatabase == db)
+        return;
+
     mDatabase = db;
-    if (mDatabase)
-        connect(mDatabase, SIGNAL(destroyed()), this, SLOT(onDatabaseDestroyed()));
+    if (mDatabase) {
+        connect(mDatabase, SIGNAL(updated()), this, SLOT(refresh()), Qt::UniqueConnection);
+        connect(mDatabase, SIGNAL(destroyed()), this, SLOT(onDatabaseDestroyed()), Qt::UniqueConnection);
+    }
+
     if (! mQuery.isEmpty())
         setQuery(mQuery);
 }

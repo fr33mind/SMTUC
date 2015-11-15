@@ -19,12 +19,14 @@ public:
     Q_INVOKABLE QVariant recordField(int, const QString&);
     Q_INVOKABLE QVariantMap rowDataMap(int) const;
     virtual QVariant data(const QModelIndex & item, int role = Qt::DisplayRole) const;
-    Q_INVOKABLE virtual void refresh();
     virtual QHash<int,QByteArray> roleNames() const;
 
 signals:
     void rowCountChanged();
     void queryChanged();
+
+public slots:
+    void refresh();
 
 private slots:
     void onDatabaseDestroyed();

@@ -15,7 +15,8 @@ SOURCES += \
     database_updater_worker.cpp \
     database_updater.cpp \
     sqlquerymodel.cpp \
-    settings.cpp
+    settings.cpp \
+    database_connection.cpp
 
 HEADERS += \
     backend.h \
@@ -24,7 +25,8 @@ HEADERS += \
     database_updater_worker.h \
     database_updater.h \
     sqlquerymodel.h \
-    settings.h
+    settings.h \
+    database_connection.h
 
 OTHER_FILES = qmldir
 

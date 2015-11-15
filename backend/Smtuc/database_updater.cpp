@@ -7,9 +7,10 @@
 DatabaseUpdater::DatabaseUpdater(Database* db, QObject *parent) :
     QObject(parent)
 {
-    mDatabase = db;
+    mDatabase = 0;
     mWorker = 0;
     mWorkerThread = 0;
+    setDatabase(db);
 }
 
 DatabaseUpdater::~DatabaseUpdater()
@@ -32,6 +33,11 @@ Database* DatabaseUpdater::database() const
 void DatabaseUpdater::setDatabase(Database* db)
 {
     mDatabase = db;
+    if (mDatabase) {
+        DatabaseConnection* connection = mDatabase->connection();
+        if (connection)
+            connect(this, SIGNAL(finished()), connection, SIGNAL(databaseUpdated()), Qt::UniqueConnection);
+    }
 }
 
 void DatabaseUpdater::update()

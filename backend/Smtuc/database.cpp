@@ -9,8 +9,7 @@
 #include <QSqlDriver>
 #include <QStandardPaths>
 
-static Database* mInstance = 0;
-static int mRefCount = 0;
+static QHash<QString, DatabaseConnection*> mDatabaseConnections;
 
 Database::Database(QObject *parent) :
     QObject(parent)
@@ -19,25 +18,38 @@ Database::Database(QObject *parent) :
     if (! db.isValid())
         db = QSqlDatabase::addDatabase("QSQLITE");
     mSqlDatabase = db;
-    mRefCount++;
-    //mInstance = this;
+    mConnection = Database::connection(connectionName());
 }
 
 Database::~Database()
 {
-    mRefCount--;
-    if (mRefCount == 0 && mSqlDatabase.isOpen())
-        mSqlDatabase.close();
+    Database::removeDatabase(this);
+    emit destroyed(this);
 }
 
-Database* Database::current()
+void Database::classBegin()
 {
-    return mInstance;
+}
+
+void Database::componentComplete()
+{
+    Database::addDatabase(this);
+    mConnection = Database::connection(connectionName());
 }
 
 QSqlDatabase Database::database() const
 {
     return mSqlDatabase;
+}
+
+QString Database::connectionName() const
+{
+    return mSqlDatabase.connectionName();
+}
+
+DatabaseConnection* Database::connection() const
+{
+    return mConnection;
 }
 
 QString Database::test()
@@ -104,4 +116,40 @@ QString Database::setupDatabase(const QString & name)
         return destFile;
 
     return name;
+}
+
+void Database::addDatabase(Database * db)
+{
+    if (! db)
+        return;
+
+    QString connectionName = db->connectionName();
+    if (mDatabaseConnections.contains(connectionName)) {
+        DatabaseConnection* dbConnection = mDatabaseConnections.value(connectionName);
+        dbConnection->addDatabase(db);
+    }
+    else {
+        mDatabaseConnections.insert(connectionName, new DatabaseConnection(connectionName));
+    }
+}
+
+void Database::removeDatabase(Database * db)
+{
+    if (! db)
+        return;
+
+    QString connectionName = db->connectionName();
+    if (mDatabaseConnections.contains(connectionName)) {
+        DatabaseConnection* dbConnection = mDatabaseConnections.value(connectionName);
+        dbConnection->removeDatabase(db);
+        if (! dbConnection->isActive()) {
+            mDatabaseConnections.remove(connectionName);
+            dbConnection->deleteLater();
+        }
+    }
+}
+
+DatabaseConnection* Database::connection(const QString & name)
+{
+    return mDatabaseConnections.value(name, 0);
 }
