@@ -16,6 +16,7 @@ class DatabaseUpdater : public QObject
     Q_PROPERTY( Database* database READ database WRITE setDatabase )
     Q_PROPERTY( double progress READ progress NOTIFY progressChanged )
     Q_PROPERTY( bool finished READ isFinished NOTIFY finished )
+    Q_PROPERTY( QString statusMessage READ statusMessage NOTIFY statusMessageChanged )
 
 public:
     DatabaseUpdater(Database *db = 0, QObject *parent = 0);
@@ -28,10 +29,12 @@ public:
     double progress() const;
 
     bool isFinished() const;
+    QString statusMessage() const;
 
 signals:
     void started();
     void progressChanged();
+    void statusMessageChanged(const QString& message);
     void finished();
     void error(const QString& error);
 

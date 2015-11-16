@@ -27,6 +27,13 @@ Dialog {
         }
     }
 
+    Connections {
+        target: databaseUpdater
+        onStatusMessageChanged: {
+            dialog.title = message;
+        }
+    }
+
     Database {
         id: database
     }

@@ -592,7 +592,7 @@ QString DatabaseUpdaterWorker::statusMessage() const
 void DatabaseUpdaterWorker::setStatusMessage(const QString & msg)
 {
     mStatusMessage = msg;
-    emit statusMessageChanged();
+    emit statusMessageChanged(msg);
 }
 
 bool DatabaseUpdaterWorker::downloadTicketPrices()

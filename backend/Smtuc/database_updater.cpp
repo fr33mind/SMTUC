@@ -54,6 +54,7 @@ void DatabaseUpdater::update()
     mWorker = new DatabaseUpdaterWorker(mDatabase);
     mWorker->moveToThread(mWorkerThread);
     connect(mWorker, SIGNAL(progressChanged()), this, SIGNAL(progressChanged()));
+    connect(mWorker, SIGNAL(statusMessageChanged(const QString&)), this, SIGNAL(statusMessageChanged(const QString&)));
     connect(mWorker, SIGNAL(error(const QString&)), this, SIGNAL(error(const QString&)));
     connect(mWorkerThread, SIGNAL(finished()), this, SIGNAL(finished()));
     connect(mWorker, SIGNAL(finished()), mWorkerThread, SLOT(quit()));
@@ -76,4 +77,11 @@ bool DatabaseUpdater::isFinished() const
         return true;
 
     return false;
+}
+
+QString DatabaseUpdater::statusMessage() const
+{
+    if (mWorker)
+        return mWorker->statusMessage();
+    return "";
 }

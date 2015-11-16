@@ -41,7 +41,7 @@ protected:
 signals:
     void progressChanged();
     void finished();
-    void statusMessageChanged();
+    void statusMessageChanged(const QString&);
     void error(const QString&);
 
 private slots:
