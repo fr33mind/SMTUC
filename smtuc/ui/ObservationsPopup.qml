@@ -6,6 +6,7 @@ import Smtuc 1.0
 MessagePopup {
     id: dialog
     title: i18n.tr("Observations")
+    textFormat: Text.StyledText
 
     property int routeId: 0
     property int seasonId: 0

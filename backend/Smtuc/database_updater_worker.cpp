@@ -207,6 +207,7 @@ void DatabaseUpdaterWorker::loadRouteStops(const QHash<int, QStringList> & route
 void DatabaseUpdaterWorker::loadRouteSchedule(const QJsonObject& schedule, QSqlDatabase& db)
 {
     QSqlQuery query = QSqlQuery("", db);
+    QString obs = _toHtml(schedule.value("observ").toString());
 
     query.prepare("INSERT INTO route_schedules (id, id_route, id_season, id_stop, date, deactivated_at,\
                   last_modified_at, effective_date, obs, comment) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
@@ -219,7 +220,7 @@ void DatabaseUpdaterWorker::loadRouteSchedule(const QJsonObject& schedule, QSqlD
     query.addBindValue(schedule.value("data_desactiv").toString());
     query.addBindValue(schedule.value("data_ult_alter").toString());
     query.addBindValue(schedule.value("data_vigor").toString());
-    query.addBindValue(schedule.value("observ").toString());
+    query.addBindValue(obs);
     query.addBindValue(schedule.value("comentario").toString());
     query.exec();
 }
@@ -644,4 +645,20 @@ void DatabaseUpdaterWorker::taskComplete()
         mCompletedTaskCount++;
         emit progressChanged();
     }
+}
+
+QString DatabaseUpdaterWorker::_toHtml(const QString & t)
+{
+    QString text = t;
+    text.replace("[U]", "<u>");
+    text.replace("[/U]", "</u>");
+    text.replace("[B]", "<b>");
+    text.replace("[/B]", "</b>");
+    text.replace("[I]", "<i>");
+    text.replace("[/I]", "</i>");
+    if (text.contains("\r\n"))
+        text.replace("\r\n", "<br>");
+    else
+        text.replace("\n", "<br>");
+    return text;
 }

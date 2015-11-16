@@ -7,6 +7,8 @@ import QtQuick.Layouts 1.1
 Popup {
     id: popup
 
+    property int textFormat: Text.AutoText
+
     Flickable {
         id: textView
         width: parent.width
@@ -25,6 +27,7 @@ Popup {
             text: popup.message
             wrapMode: Text.WordWrap
             height: implicitHeight
+            textFormat: popup.textFormat
         }
     }
 }

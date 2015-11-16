@@ -75,6 +75,7 @@ private:
     void downloadOutlets();
     void loadOutlets(const QByteArray&, QSqlDatabase&);
     void loadOutlet(const QJsonValue&, QSqlDatabase&);
+    QString _toHtml(const QString&);
 
     //test function
     QByteArray loadData(const QString&);
