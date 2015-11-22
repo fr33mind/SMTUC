@@ -12,6 +12,11 @@ NetworkReplyTimeout::NetworkReplyTimeout(QNetworkReply* reply, QObject *parent) 
     }
 }
 
+QNetworkReply* NetworkReplyTimeout::networkReply() const
+{
+    return mNetworkReply;
+}
+
 void NetworkReplyTimeout::_timeout()
 {
     if (mNetworkReply->isRunning()) {
