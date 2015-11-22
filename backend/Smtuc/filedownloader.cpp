@@ -5,6 +5,8 @@
 #include <QNetworkReply>
 #include <QStandardPaths>
 
+#include "network_reply_timeout.h"
+
 FileDownloader::FileDownloader(QObject *parent) :
     QObject(parent)
 {
@@ -67,7 +69,8 @@ bool FileDownloader::start()
         return false;
 
     for(int i=0; i < mQueuedUrls.size(); i++) {
-        mNetworkManager->get(QNetworkRequest(mQueuedUrls.at(i)));
+        QNetworkReply * reply = mNetworkManager->get(QNetworkRequest(mQueuedUrls.at(i)));
+        new NetworkReplyTimeout(reply, this);
     }
 
     return true;
@@ -89,6 +92,8 @@ void FileDownloader::onReplyFinished(QNetworkReply * reply)
 
     if (mQueuedUrls.isEmpty())
         emit finished();
+
+    reply->deleteLater();
 }
 
 bool FileDownloader::hasUrl(const QUrl& url) const
