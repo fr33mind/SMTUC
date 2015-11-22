@@ -90,10 +90,10 @@ void FileDownloader::onReplyFinished(QNetworkReply * reply)
 
     emit replyFinished(reply);
 
+    reply->deleteLater();
+
     if (mQueuedUrls.isEmpty())
         emit finished();
-
-    reply->deleteLater();
 }
 
 bool FileDownloader::hasUrl(const QUrl& url) const
