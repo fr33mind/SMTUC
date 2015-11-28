@@ -305,6 +305,8 @@ QStringList DatabaseUpdaterWorker::parseTimes(const QJsonValue & time)
 
     QString t = time.toString().trimmed(),
             obs = "";
+    QRegularExpression hourRange("^[0-9]{1,2}:\-[0-9]{1,2}$");
+    bool ok = false;
 
     if (t.startsWith(","))
         t.remove(0, 1);
@@ -319,6 +321,16 @@ QStringList DatabaseUpdaterWorker::parseTimes(const QJsonValue & time)
         if (t.contains(".")) {
            t.truncate(t.indexOf("."));
            times[i] = t + " " + obs;
+        }
+
+        //Fix times with negative numbers, e.g.: 07:-1
+        if (hourRange.match(t).hasMatch()) {
+            QString hourStr = t.split(":")[0];
+            int hour = hourStr.toInt(&ok);
+            int nextHour = hour + 1;
+            if (ok) {
+                times[i] =  QString(tr("%1h to %2h %3")).arg(hour).arg(nextHour).arg(obs);
+            }
         }
     }
 
