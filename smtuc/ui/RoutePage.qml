@@ -17,7 +17,7 @@ Page {
     property int dayId: 1
     property int dayIndex: 0
 
-    title: i18n.tr("Route") + " " + routeName
+    title: i18n.tr("Route %1").arg(routeName)
     id: routePage
     anchors.right: parent.right
     anchors.leftMargin: 4
@@ -212,140 +212,153 @@ Page {
                " and id_season = " + routePage.seasonId + " and id_day = " + routePage.dayId
     }
 
-    Column {
-        id: comboColumn
-        spacing: 2
-        width: parent.width
-        height: childrenRect.height
+    Item {
+        id: container
+        anchors.fill: parent
+        anchors.margins: units.gu(0.5)
 
-        OptionSelector {
-            id: seasonSelector
-            expanded: false
-            containerHeight: itemHeight * model.rowCount
-            model: seasonsDataModel
-            selectedIndex: routePage.seasonIndex
-            delegate: OptionSelectorDelegate {
-                text: name
+        Column {
+            id: comboColumn
+            spacing: units.gu(0.5)
+            width: parent.width
+            height: childrenRect.height
+
+            OptionSelector {
+                id: seasonSelector
+                expanded: false
+                containerHeight: itemHeight * model.rowCount
+                model: seasonsDataModel
+                selectedIndex: routePage.seasonIndex
+                delegate: OptionSelectorDelegate {
+                    text: name
+                }
+                onDelegateClicked: {
+                    if (routePage.seasonIndex != index) {
+                        routePage.seasonIndex = index;
+                        routePage.seasonId = parseInt(this.model.recordField(this.selectedIndex, "id"));
+                    }
+                }
             }
-            onDelegateClicked: {
-                if (routePage.seasonIndex != index) {
-                    routePage.seasonIndex = index;
-                    routePage.seasonId = parseInt(this.model.recordField(this.selectedIndex, "id"));
+
+            OptionSelector {
+                id: daySelector
+                expanded: false
+                containerHeight: itemHeight * model.rowCount
+                model: daysDataModel
+                selectedIndex: routePage.dayIndex
+
+                delegate: OptionSelectorDelegate {
+                    text: name
+                }
+                onDelegateClicked: {
+                    if (routePage.dayIndex != index) {
+                        routePage.dayIndex = index;
+                        routePage.dayId = parseInt(this.model.recordField(index, "id"));
+                    }
                 }
             }
         }
 
-        OptionSelector {
-            id: daySelector
-            expanded: false
-            containerHeight: itemHeight * model.rowCount
-            model: daysDataModel
-            selectedIndex: routePage.dayIndex
-
-            delegate: OptionSelectorDelegate {
-                text: name
-            }
-            onDelegateClicked: {
-                if (routePage.dayIndex != index) {
-                    routePage.dayIndex = index;
-                    routePage.dayId = parseInt(this.model.recordField(index, "id"));
-                }
-            }
-        }
-    }
-
-    Row {
-        anchors.top: comboColumn.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
-        anchors.topMargin: 4
-        clip: true
-
-        Rectangle {
-            width: parent.width / 2
-            anchors.top: parent.top
+        Row {
+            anchors.top: comboColumn.bottom
+            anchors.left: parent.left
+            anchors.right: parent.right
             anchors.bottom: parent.bottom
-            color: "transparent"
+            anchors.topMargin: units.gu(0.5)
+            clip: true
 
-           Label {
-               id: listLabel
-               text: routePage.routeMainStop1["name"] + ""
-               width: parent.width
-               height: {
-                   if (listLabel2.implicitHeight > this.implicitHeight)
-                       return listLabel2.implicitHeight
-                   return this.implicitHeight
-               }
-               wrapMode: Text.WordWrap
-               horizontalAlignment: Text.AlignHCenter
-               verticalAlignment: Text.AlignVCenter
-           }
+            Rectangle {
+                width: parent.width / 2
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                color: "transparent"
 
-           UbuntuListView {
-               id: timesList1
-               model: routeTimes1
-               anchors.top: listLabel.bottom
-               anchors.bottom: parent.bottom
-               anchors.left: parent.left
-               anchors.right: parent.right
-               clip: true
-
-               delegate: ListItem.Standard {
-                   Label {
-                       anchors.fill: parent
-                       anchors.leftMargin: units.gu(1)
-                       text: time.indexOf("_") != -1 ? time.replace("_", "") : time
-                       font.underline: time.indexOf("_") != -1 ? true : false
-                       horizontalAlignment: Text.AlignJustify
+               Label {
+                   id: listLabel
+                   text: routePage.routeMainStop1["name"] + ""
+                   anchors.left: parent.left
+                   anchors.right: parent.right
+                   anchors.leftMargin: units.gu(1)
+                   height: {
+                       if (listLabel2.implicitHeight > this.implicitHeight)
+                           return listLabel2.implicitHeight
+                       return this.implicitHeight
                    }
-                   showDivider: false
-                   height: units.gu(3)
+                   wrapMode: Text.WordWrap
+                   horizontalAlignment: Text.AlignLeft
+                   verticalAlignment: Text.AlignVCenter
+                   font.bold: true
                }
-           }
-        }
 
-        Rectangle {
-            width: parent.width / 2
-            anchors.top: parent.top
-            anchors.bottom: parent.bottom
-            color: "transparent"
-
-           Label {
-               id: listLabel2
-               text: routePage.routeMainStop2["name"] + ""
-               width: parent.width
-               wrapMode: Text.WordWrap
-               height:  {
-                   if (listLabel.implicitHeight > this.implicitHeight)
-                       return listLabel.implicitHeight
-                   return this.implicitHeight
-               }
-               horizontalAlignment: Text.AlignHCenter
-               verticalAlignment: Text.AlignVCenter
-           }
-
-           UbuntuListView {
-               id: timesList2
-               model: routeTimes2
-               width: parent.width
-               anchors.top: listLabel2.bottom
-               anchors.bottom: parent.bottom
-               anchors.left: parent.left
-               anchors.right: parent.right
-               clip: true
-               delegate: ListItem.Standard {
-                   Label {
-                       anchors.fill: parent
-                       anchors.leftMargin: units.gu(1)
-                       text: time.indexOf("_") != -1 ? time.replace("_", "") : time
-                       font.underline: time.indexOf("_") != -1 ? true : false
-                       horizontalAlignment: Text.AlignJustify
+               UbuntuListView {
+                   id: timesList1
+                   model: routeTimes1
+                   anchors.topMargin: units.gu(0.5)
+                   anchors.leftMargin: units.gu(2)
+                   anchors.top: listLabel.bottom
+                   anchors.bottom: parent.bottom
+                   anchors.left: parent.left
+                   anchors.right: parent.right
+                   clip: true
+                   delegate: ListItem.Standard {
+                       Label {
+                           anchors.fill: parent
+                           text: time.indexOf("_") != -1 ? time.replace("_", "") : time
+                           font.underline: time.indexOf("_") != -1 ? true : false
+                           horizontalAlignment: Text.AlignJustify
+                       }
+                       showDivider: false
+                       height: units.gu(3)
                    }
-                   showDivider: false
-                   height: units.gu(3)
                }
-           }
+            }
+
+            Rectangle {
+                width: parent.width / 2
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                color: "transparent"
+
+               Label {
+                   id: listLabel2
+                   text: routePage.routeMainStop2["name"] + ""
+                   anchors.left: parent.left
+                   anchors.right: parent.right
+                   anchors.leftMargin: units.gu(1)
+                   wrapMode: Text.WordWrap
+                   height:  {
+                       if (listLabel.implicitHeight > this.implicitHeight)
+                           return listLabel.implicitHeight
+                       return this.implicitHeight
+                   }
+                   horizontalAlignment: Text.AlignLeft
+                   verticalAlignment: Text.AlignVCenter
+                   font.bold: true
+               }
+
+               UbuntuListView {
+                   id: timesList2
+                   model: routeTimes2
+                   width: parent.width
+                   anchors.topMargin: units.gu(0.5)
+                   anchors.leftMargin: units.gu(2)
+                   anchors.top: listLabel2.bottom
+                   anchors.bottom: parent.bottom
+                   anchors.left: parent.left
+                   anchors.right: parent.right 
+                   clip: true
+                   delegate: ListItem.Standard {
+                       Label {
+                           anchors.fill: parent
+                           text: time.indexOf("_") != -1 ? time.replace("_", "") : time
+                           font.underline: time.indexOf("_") != -1 ? true : false
+                           horizontalAlignment: Text.AlignJustify
+                       }
+                       showDivider: false
+                       height: units.gu(3)
+                   }
+               }
+            }
         }
     }
 }
