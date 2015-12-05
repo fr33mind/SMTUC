@@ -16,6 +16,7 @@
 #define TICKETS_URL "http://smtuc.pt/api/bilhetes/"
 #define TICKET_PRICES_URL "http://smtuc.pt/api/bilhetes/%1/tarifas/"
 #define OUTLETS_URL "http://smtuc.pt/api/postos/"
+#define VARS_URL "http://smtuc.pt/api/vars/"
 
 class Database;
 
@@ -75,6 +76,7 @@ private:
     void downloadOutlets();
     void loadOutlets(const QByteArray&, QSqlDatabase&);
     void loadOutlet(const QJsonValue&, QSqlDatabase&);
+    void loadVars(const QByteArray&, QSqlDatabase&);
     QString _toHtml(const QString&);
 
     //test function

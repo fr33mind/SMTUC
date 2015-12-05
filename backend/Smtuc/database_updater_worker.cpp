@@ -512,7 +512,7 @@ void DatabaseUpdaterWorker::load()
         return;
 
     setStatusMessage(tr("Installing..."));
-    setTaskCount(5);
+    setTaskCount(6);
 
     QByteArray data;
     data = mFileDownloader->data(QUrl(SEASONS_URL));
@@ -537,6 +537,10 @@ void DatabaseUpdaterWorker::load()
 
     data = mFileDownloader->data(QUrl(OUTLETS_URL));
     loadOutlets(data, db);
+    taskComplete();
+
+    data = mFileDownloader->data(QUrl(VARS_URL));
+    loadVars(data, db);
     taskComplete();
 
     QDateTime today = QDateTime::currentDateTimeUtc();
@@ -579,6 +583,7 @@ void DatabaseUpdaterWorker::start()
     mFileDownloader->addUrl(QUrl(ROUTE_TIMES_URL));
     mFileDownloader->addUrl(QUrl(TICKETS_URL));
     mFileDownloader->addUrl(QUrl(OUTLETS_URL));
+    mFileDownloader->addUrl(QUrl(VARS_URL));
     bool started = mFileDownloader->start();
     if (! started)
         emit error(tr("Network not available."));
@@ -673,4 +678,34 @@ QString DatabaseUpdaterWorker::_toHtml(const QString & t)
     else
         text.replace("\n", "<br>");
     return text;
+}
+
+void DatabaseUpdaterWorker::loadVars(const QByteArray & data, QSqlDatabase & db)
+{
+    QJsonDocument doc = QJsonDocument::fromJson(data);
+    if (! doc.isArray() || doc.isEmpty())
+        return;
+
+    qDebug() << "Loading vars";
+
+    db.transaction();
+    db.exec("DELETE FROM vars");
+    QJsonArray vars = doc.array();
+    QJsonObject var;
+    QJsonValue val;
+
+    for(int i=0; i < vars.size(); i++) {
+        val = vars.at(i);
+        if (! val.isObject())
+            continue;
+        var = val.toObject();
+
+        QSqlQuery query("", db);
+        query.prepare("INSERT INTO vars (name, value) VALUES(?, ?)");
+        query.addBindValue(var.value("v_nome").toString());
+        query.addBindValue(var.value("v_valor").toString());
+        query.exec();
+    }
+
+    db.commit();
 }
