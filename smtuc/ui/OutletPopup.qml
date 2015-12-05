@@ -11,7 +11,17 @@ Popup {
     property string normalHour: ""
     property string weekendHour: ""
     property string coordinates: ""
+    property int official: 0
     readonly property string googleMapsUrl: "http://maps.google.com/maps?z=12&t=m&q=loc:" + coordinates
+
+    SqlQueryModel {
+        id: varsModel
+        property string name: outlet.official ? "smtuc_android_loja_descricao" :
+                                                "smtuc_android_agente_descricao"
+        database: Database{}
+        query: "select * from vars where name = '" + name + "'"
+        onQueryChanged: descriptionLabel.text = this.recordField(0, "value")
+    }
 
     Flickable {
         contentWidth: parent.width
@@ -27,9 +37,10 @@ Popup {
 
             Label {
                 id: descriptionLabel
+                width: parent.width
+                wrapMode: Text.WordWrap
                 text: ""
             }
-
 
             CategoryItem {
                 title: i18n.tr("Address")

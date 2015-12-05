@@ -40,6 +40,7 @@ Page {
                     dialog.normalHour = normal_hour;
                     dialog.weekendHour = weekend_hour;
                     dialog.coordinates = coordinates;
+                    dialog.official = official;
                 }
         }
     }
