@@ -36,7 +36,8 @@ Popup {
     UbuntuListView {
         model: stopsModel
         width: parent.width
-        height: popup.availableHeight
+        implicitHeight: contentItem.childrenRect.height
+        height: implicitHeight > popup.availableHeight ? popup.availableHeight : implicitHeight
         clip: true
         delegate: ListItem.Standard {
             Label {
