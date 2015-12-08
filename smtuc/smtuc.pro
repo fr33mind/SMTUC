@@ -29,6 +29,8 @@ CONF_FILES += smtuc.apparmor \
 OTHER_FILES += $${CONF_FILES} \
                $${QML_FILES}
 
+IMAGE_FILES += images/bus.svg
+
 #copy database file
 DB_FILENAME = smtuc.sqlite
 !equals(_PRO_FILE_PWD_, $$OUT_PWD) {
@@ -53,5 +55,8 @@ config_files.files += $${CONF_FILES}
 ui_files.path = /smtuc/ui
 ui_files.files += $${UI_FILES}
 
-INSTALLS+=config_files qml_files db_file ui_files
+image_files.path = /smtuc/images
+image_files.files += $${IMAGE_FILES}
+
+INSTALLS+=config_files qml_files db_file ui_files image_files
 
