@@ -64,7 +64,7 @@ Page {
     head.sections.model: []
     head.actions: [
         Action {
-            iconSource: "../images/bus.png"
+            iconSource: "../images/bus.svg"
             text: i18n.tr("Stops")
             onTriggered: {
                 PopupUtils.open(stopsComponent)
