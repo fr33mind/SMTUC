@@ -306,6 +306,7 @@ Page {
                            text: time.indexOf("_") != -1 ? time.replace("_", "") : time
                            font.underline: time.indexOf("_") != -1 ? true : false
                            horizontalAlignment: Text.AlignJustify
+                           verticalAlignment: Text.AlignVCenter
                        }
                        showDivider: false
                        height: units.gu(3)
@@ -357,6 +358,7 @@ Page {
                            text: time.indexOf("_") != -1 ? time.replace("_", "") : time
                            font.underline: time.indexOf("_") != -1 ? true : false
                            horizontalAlignment: Text.AlignJustify
+                           verticalAlignment: Text.AlignVCenter
                        }
                        showDivider: false
                        height: units.gu(3)
