@@ -309,6 +309,10 @@ Page {
                        }
                        showDivider: false
                        height: units.gu(3)
+                       onClicked: {
+                           if (time.indexOf(" ") != -1 && time.split(" ")[1].length)
+                            PopupUtils.open(obsComponent)
+                       }
                    }
                }
             }
@@ -356,6 +360,10 @@ Page {
                        }
                        showDivider: false
                        height: units.gu(3)
+                       onClicked: {
+                          if (time.indexOf(" ") != -1 && time.split(" ")[1].length)
+                            PopupUtils.open(obsComponent)
+                       }
                    }
                }
             }
