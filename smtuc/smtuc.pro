@@ -29,7 +29,8 @@ CONF_FILES += smtuc.apparmor \
 OTHER_FILES += $${CONF_FILES} \
                $${QML_FILES}
 
-IMAGE_FILES += images/bus.svg
+IMAGE_FILES += images/bus.svg \
+               images/smtuc.svg
 
 #copy database file
 DB_FILENAME = smtuc.sqlite

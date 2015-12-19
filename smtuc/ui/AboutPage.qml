@@ -29,7 +29,7 @@ Page {
 
                 Image {
                     id: logo
-                    source: "../smtuc.png"
+                    source: "../images/smtuc.svg"
                     width: units.gu(20)
                     height: units.gu(20)
                     anchors.horizontalCenter: parent.horizontalCenter
