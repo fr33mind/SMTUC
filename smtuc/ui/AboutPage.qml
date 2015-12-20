@@ -6,7 +6,7 @@ Page {
     id: aboutPage
     property string name: "SMTUC"
     property string version: "1.0"
-    property string description: i18n.tr("Unofficial SMTUC application.")
+    property string description: i18n.tr("Unofficial SMTUC application for Ubuntu Phone.")
     property string author: "Carlos Pais"
     property string repositoryUrl: "https://github.com/fr33mind/SMTUC"
 
@@ -63,7 +63,9 @@ Page {
                     id: descLabel
                     text: aboutPage.description
                     font.pixelSize: FontUtils.sizeToPixels("large")
-                    anchors.horizontalCenter: parent.horizontalCenter
+                    width: parent.width
+                    horizontalAlignment: Text.AlignHCenter
+                    wrapMode: Text.WordWrap
                 }
 
                 Item {
