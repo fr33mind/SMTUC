@@ -71,6 +71,14 @@ Page {
             }
         },
         Action {
+            id: action
+            iconName: "info"
+            text: i18n.tr("Obs.")
+            onTriggered: {
+                PopupUtils.open(obsComponent)
+            }
+        },
+        Action {
             iconName: routePage.favorite ? "starred" : "non-starred"
             text: i18n.tr("Favorite")
             onTriggered: {
@@ -78,14 +86,6 @@ Page {
                 var result = defaultDatabase.exec("UPDATE routes set favorite = " + favorite + " where id = " + routePage.routeId);
                 if (result)
                     routePage.favorite = favorite;
-            }
-        },
-        Action {
-            id: action
-            iconName: "info"
-            text: i18n.tr("Obs.")
-            onTriggered: {
-                PopupUtils.open(obsComponent)
             }
         }
     ]
