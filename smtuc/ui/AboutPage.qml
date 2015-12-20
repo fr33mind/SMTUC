@@ -82,7 +82,7 @@ Page {
 
                 Label {
                     id: licenseLabel
-                    text: i18n.tr('Released under the GNU GPLv3.')
+                    text: i18n.tr("Released under the GNU GPLv3.")
                     anchors.horizontalCenter: parent.horizontalCenter
                     font.pixelSize: FontUtils.sizeToPixels("small")
                     wrapMode: Text.WordWrap
@@ -91,7 +91,7 @@ Page {
 
                 Label {
                     id: repositoryLabel
-                    text: i18n.tr('Source code available at %1.').arg('<a href="'+aboutPage.repositoryUrl+'">GitHub</a>')
+                    text: i18n.tr("Source code available at %1.").arg('<a href="'+aboutPage.repositoryUrl+'">GitHub</a>')
                     anchors.horizontalCenter: parent.horizontalCenter
                     font.pixelSize: FontUtils.sizeToPixels("small")
                     onLinkActivated: Qt.openUrlExternally(link)
