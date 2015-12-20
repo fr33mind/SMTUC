@@ -57,14 +57,14 @@ Dialog {
 
     Button {
         id: cancelButton
-        text: "cancel"
+        text: i18n.tr("Cancel")
         onClicked: PopupUtils.close(dialog)
         visible: dialog.started ? false : true
     }
 
     Button {
         id: updateButton
-        text: "update"
+        text: i18n.tr("Update")
         color: UbuntuColors.orange
         visible: dialog.started ? false: true
         onClicked: {
