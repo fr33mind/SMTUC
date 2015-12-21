@@ -65,8 +65,9 @@ QByteArray FileDownloader::data(const QUrl & url)
 
 bool FileDownloader::start()
 {
-    if (mNetworkManager->networkAccessible() != QNetworkAccessManager::Accessible)
-        return false;
+    //For some strange reason networkAccessible does not work properly on the phone
+    //if (mNetworkManager->networkAccessible() != QNetworkAccessManager::Accessible)
+      //  return false;
 
     for(int i=0; i < mQueuedUrls.size(); i++) {
         QNetworkReply * reply = mNetworkManager->get(QNetworkRequest(mQueuedUrls.at(i)));
