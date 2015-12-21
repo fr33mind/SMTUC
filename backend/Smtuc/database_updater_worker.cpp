@@ -329,7 +329,7 @@ QStringList DatabaseUpdaterWorker::parseTimes(const QJsonValue & time)
             int hour = hourStr.toInt(&ok);
             int nextHour = hour + 1;
             if (ok) {
-                times[i] =  QString(tr("%1h to %2h %3")).arg(hour).arg(nextHour).arg(obs);
+                times[i] =  QString("%1h às %2h %3").arg(hour).arg(nextHour).arg(obs);
             }
         }
     }
