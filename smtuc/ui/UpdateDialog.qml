@@ -15,7 +15,7 @@ Dialog {
     Connections {
         target: databaseUpdater
         onError: {
-            dialog.error = error;
+            dialog.error = i18n.tr(error);
         }
     }
 
@@ -30,7 +30,7 @@ Dialog {
     Connections {
         target: databaseUpdater
         onStatusMessageChanged: {
-            dialog.title = message;
+            dialog.title = i18n.tr(message);
         }
     }
 
