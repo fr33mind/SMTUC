@@ -57,6 +57,7 @@ private:
     int mCompletedTaskCount;
     int mFailedTaskCount;
     QString mStatusMessage;
+    QStringList mFavoriteRoutes;
 
     void loadSeasons(const QByteArray&, QSqlDatabase&);
     void loadRoutes(const QByteArray&, QSqlDatabase&);
@@ -79,6 +80,8 @@ private:
     void loadOutlet(const QJsonValue&, QSqlDatabase&);
     void loadVars(const QByteArray&, QSqlDatabase&);
     QString _toHtml(const QString&);
+    void backupFavoriteRoutes(QSqlDatabase&);
+    void restoreFavoriteRoutes(QSqlDatabase&);
 
     //test function
     QByteArray loadData(const QString&);

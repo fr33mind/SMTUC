@@ -104,6 +104,7 @@ void DatabaseUpdaterWorker::loadRoutes(const QByteArray& data, QSqlDatabase& db)
     if (routes.isEmpty())
         return;
 
+    backupFavoriteRoutes(db);
     db.transaction();
 
     qDebug() << "Deleting tables...";
@@ -139,7 +140,7 @@ void DatabaseUpdaterWorker::loadRoutes(const QByteArray& data, QSqlDatabase& db)
     }
 
     db.commit();
-
+    restoreFavoriteRoutes(db);
     loadRouteStops(routeStops, db);
 }
 
@@ -714,6 +715,41 @@ void DatabaseUpdaterWorker::loadVars(const QByteArray & data, QSqlDatabase & db)
         query.prepare("INSERT INTO vars (name, value) VALUES(?, ?)");
         query.addBindValue(var.value("v_nome").toString());
         query.addBindValue(var.value("v_valor").toString());
+        query.exec();
+    }
+
+    db.commit();
+}
+
+void DatabaseUpdaterWorker::backupFavoriteRoutes(QSqlDatabase& db)
+{
+    mFavoriteRoutes.clear();
+
+    QSqlQuery query("", db);
+    query.prepare("SELECT name FROM routes where favorite = 1");
+    bool ok = query.exec();
+
+    if (ok) {
+        while(query.next()) {
+            QSqlRecord record = query.record();
+            if (! record.isEmpty()) {
+                mFavoriteRoutes << record.value(0).toString();
+            }
+        }
+    }
+}
+
+void DatabaseUpdaterWorker::restoreFavoriteRoutes(QSqlDatabase& db)
+{
+    if (mFavoriteRoutes.isEmpty())
+        return;
+
+    db.transaction();
+
+    for(int i=0; i < mFavoriteRoutes.size(); i++) {
+        QSqlQuery query("", db);
+        query.prepare("UPDATE routes set favorite=1 where name = ?");
+        query.addBindValue(mFavoriteRoutes.at(i));
         query.exec();
     }
 
