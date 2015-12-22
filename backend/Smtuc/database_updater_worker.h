@@ -48,13 +48,14 @@ signals:
 private slots:
     void load();
     void replyFinished(QNetworkReply* reply);
-    void taskComplete();
+    void taskComplete(bool success=true);
 
 private:
     FileDownloader* mFileDownloader;
     Database* mDatabase;
     int mQueuedTaskCount;
     int mCompletedTaskCount;
+    int mFailedTaskCount;
     QString mStatusMessage;
 
     void loadSeasons(const QByteArray&, QSqlDatabase&);

@@ -27,6 +27,7 @@ DatabaseUpdaterWorker::DatabaseUpdaterWorker(Database* db, QObject *parent) :
     mDatabase = db;
     mQueuedTaskCount = 0;
     mCompletedTaskCount = 0;
+    mFailedTaskCount = 0;
     connect(this, SIGNAL(error(const QString&)), this, SIGNAL(finished()));
 }
 
@@ -577,7 +578,7 @@ void DatabaseUpdaterWorker::start()
 
     mFileDownloader = new FileDownloader;
     connect(mFileDownloader, SIGNAL(finished()), this, SLOT(load()));
-    connect(mFileDownloader, SIGNAL(replyFinished(QNetworkReply*)), this, SLOT(taskComplete()));
+    connect(mFileDownloader, SIGNAL(replyFinished(QNetworkReply*)), this, SLOT(replyFinished(QNetworkReply*)));
     mFileDownloader->addUrl(QUrl(SEASONS_URL));
     mFileDownloader->addUrl(QUrl(ROUTES_URL));
     mFileDownloader->addUrl(QUrl(ROUTE_TIMES_URL));
@@ -592,13 +593,15 @@ void DatabaseUpdaterWorker::start()
 double DatabaseUpdaterWorker::progress() const
 {
     int total = mQueuedTaskCount + mCompletedTaskCount;
-    return (mCompletedTaskCount * 1.0) / total;
+    int success = mCompletedTaskCount - mFailedTaskCount;
+    return (success * 1.0) / total;
 }
 
 void DatabaseUpdaterWorker::setTaskCount(int count)
 {
     mQueuedTaskCount = count;
     mCompletedTaskCount = 0;
+    mFailedTaskCount = 0;
 }
 
 QString DatabaseUpdaterWorker::statusMessage() const
@@ -647,19 +650,26 @@ bool DatabaseUpdaterWorker::hasTicketPrices() const
 
 void DatabaseUpdaterWorker::replyFinished(QNetworkReply *reply)
 {
-    qDebug() << "reply finished";
-    if (!hasTicketPrices() && reply && reply->url() == QUrl(TICKETS_URL)) {
-        downloadTicketPrices();
+    bool success = false;
+    if (reply) {
+        if (reply->error() == QNetworkReply::NoError)
+            success = true;
+
+        if (!hasTicketPrices() && success && reply->url() == QUrl(TICKETS_URL)) {
+            downloadTicketPrices();
+        }
     }
 
-    taskComplete();
+    taskComplete(success);
 }
 
-void DatabaseUpdaterWorker::taskComplete()
+void DatabaseUpdaterWorker::taskComplete(bool success)
 {
     if (mQueuedTaskCount > 0) {
         mQueuedTaskCount--;
         mCompletedTaskCount++;
+        if (! success)
+            mFailedTaskCount++;
         emit progressChanged();
     }
 }
