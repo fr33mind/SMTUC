@@ -1,0 +1,160 @@
+# Portuguese translation for the unoffical SMTUC application for Ubuntu Phone.
+# Copyright (C) 2015 Carlos Pais
+# This file is distributed under the same license as the PACKAGE package.
+# Carlos Pais <freemind@live.com.pt>, 2015.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-12-20 19:58+0000\n"
+"PO-Revision-Date: 2015-12-20 19:58+0000\n"
+"Last-Translator: Carlos Pais <freemind@live.com.pt>\n"
+"Language-Team: \n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: /home/carlos/Projectos/SMTUC/smtuc/Main.qml:44
+#: /home/carlos/Projectos/SMTUC/smtuc/ui/RoutesPage.qml:130
+#: /home/carlos/Projectos/SMTUC/smtuc/ui/UpdateDialog.qml:8
+#: /home/carlos/Projectos/SMTUC/smtuc/ui/UpdateDialog.qml:67
+msgid "Update"
+msgstr "Atualizar"
+
+#: /home/carlos/Projectos/SMTUC/smtuc/Main.qml:45
+msgid ""
+"The local database is old and may be out of date. Please consider updating "
+"it."
+msgstr "A base de dados local é antiga e pode estar desatualizada. Por favor considere atualizá-la."
+
+#: /home/carlos/Projectos/SMTUC/smtuc/Main.qml:61
+#: /home/carlos/Projectos/SMTUC/smtuc/ui/RoutesPage.qml:10
+msgid "Routes"
+msgstr "Linhas"
+
+#: /home/carlos/Projectos/SMTUC/smtuc/Main.qml:69
+msgid "Tickets"
+msgstr "Bilhetes"
+
+#: /home/carlos/Projectos/SMTUC/smtuc/Main.qml:77
+msgid "Outlets"
+msgstr "Locais de Venda"
+
+#: /home/carlos/Projectos/SMTUC/smtuc/Main.qml:85
+msgid "About"
+msgstr "Acerca"
+
+#: /home/carlos/Projectos/SMTUC/smtuc/ui/AboutPage.qml:9
+msgid "Unofficial SMTUC application for Ubuntu Phone."
+msgstr "Aplicação não oficial dos SMTUC para Ubuntu Phone."
+
+#: /home/carlos/Projectos/SMTUC/smtuc/ui/AboutPage.qml:85
+msgid "Released under the GNU GPLv3."
+msgstr "Lançada sob a licença GNU GPLv3."
+
+#: /home/carlos/Projectos/SMTUC/smtuc/ui/AboutPage.qml:94
+#, qt-format
+msgid "Source code available at %1."
+msgstr "Código fonte disponível em %1."
+
+#: /home/carlos/Projectos/SMTUC/smtuc/ui/ObservationsPopup.qml:8
+msgid "Observations"
+msgstr "Observações"
+
+#: /home/carlos/Projectos/SMTUC/smtuc/ui/OutletPopup.qml:46
+msgid "Address"
+msgstr "Endereço"
+
+#: /home/carlos/Projectos/SMTUC/smtuc/ui/OutletPopup.qml:59
+msgid "Telephone"
+msgstr "Telefone"
+
+#: /home/carlos/Projectos/SMTUC/smtuc/ui/OutletPopup.qml:68
+msgid "Schedule"
+msgstr "Horário"
+
+#: /home/carlos/Projectos/SMTUC/smtuc/ui/OutletPopup.qml:77
+msgid "Weekdays"
+msgstr "Dias da semana"
+
+#: /home/carlos/Projectos/SMTUC/smtuc/ui/OutletPopup.qml:90
+msgid "Weekends"
+msgstr "Fins de semana"
+
+#: /home/carlos/Projectos/SMTUC/smtuc/ui/OutletsPage.qml:22
+#: /home/carlos/Projectos/SMTUC/smtuc/ui/TicketsPage.qml:22
+msgid "Information"
+msgstr "Informação"
+
+#: /home/carlos/Projectos/SMTUC/smtuc/ui/Popup.qml:77
+msgid "OK"
+msgstr "OK"
+
+#: /home/carlos/Projectos/SMTUC/smtuc/ui/RoutePage.qml:20
+#, qt-format
+msgid "Route %1"
+msgstr "Linha %1"
+
+#: /home/carlos/Projectos/SMTUC/smtuc/ui/RoutePage.qml:68
+#: /home/carlos/Projectos/SMTUC/smtuc/ui/StopsPopup.qml:11
+msgid "Stops"
+msgstr "Paragens"
+
+#: /home/carlos/Projectos/SMTUC/smtuc/ui/RoutePage.qml:76
+msgid "Obs."
+msgstr "Obs."
+
+#: /home/carlos/Projectos/SMTUC/smtuc/ui/RoutePage.qml:83
+msgid "Favorite"
+msgstr "Favorita"
+
+#: /home/carlos/Projectos/SMTUC/smtuc/ui/RoutesPage.qml:19
+msgid "All"
+msgstr "Todas"
+
+#: /home/carlos/Projectos/SMTUC/smtuc/ui/RoutesPage.qml:19
+msgid "Favorites"
+msgstr "Favoritas"
+
+#: /home/carlos/Projectos/SMTUC/smtuc/ui/RoutesPage.qml:103
+msgid "Error"
+msgstr "Erro"
+
+#: /home/carlos/Projectos/SMTUC/smtuc/ui/RoutesPage.qml:137
+msgid "Search"
+msgstr "Pesquisar"
+
+#: /home/carlos/Projectos/SMTUC/smtuc/ui/RoutesPage.qml:158
+msgid "Search..."
+msgstr "Pesquisar..."
+
+#: /home/carlos/Projectos/SMTUC/smtuc/ui/UpdateDialog.qml:9
+msgid ""
+"Update local database?\n"
+" (Requires internet connection)"
+msgstr "Atualizar base de dados local?\n"
+" (Requer ligação à internet)"
+
+#: /home/carlos/Projectos/SMTUC/smtuc/ui/UpdateDialog.qml:60
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: /home/carlos/Projectos/SMTUC/backend/Smtuc/database_updater_worker.cpp:506
+msgid "Error transfering files."
+msgstr "Erro ao transferir ficheiros."
+
+#: /home/carlos/Projectos/SMTUC/backend/Smtuc/database_updater_worker.cpp:514
+msgid "Installing..."
+msgstr "Instalando..."
+
+#: /home/carlos/Projectos/SMTUC/backend/Smtuc/database_updater_worker.cpp:575
+msgid "Downloading..."
+msgstr "Transferindo..."
+
+#: /home/carlos/Projectos/SMTUC/backend/Smtuc/database_updater_worker.cpp:589
+#: /home/carlos/Projectos/SMTUC/backend/Smtuc/database_updater_worker.cpp:638
+msgid "Network not available."
+msgstr "Rede não disponível."
