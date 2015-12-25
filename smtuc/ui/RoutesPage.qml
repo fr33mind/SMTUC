@@ -7,7 +7,7 @@ import Smtuc 1.0
 
 Page {
     id: routesPage
-    title: "Routes"
+    title: i18n.tr("Routes")
     flickable: null
 
     property string filter: searchInput.displayText
