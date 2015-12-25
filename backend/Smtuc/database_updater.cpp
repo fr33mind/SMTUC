@@ -1,7 +1,4 @@
 #include "database_updater.h"
-
-#include <QDebug>
-
 #include "database.h"
 
 DatabaseUpdater::DatabaseUpdater(Database* db, QObject *parent) :

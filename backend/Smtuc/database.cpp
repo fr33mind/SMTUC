@@ -4,7 +4,6 @@
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QVariant>
-#include <QDebug>
 #include <QDir>
 #include <QSqlDriver>
 #include <QStandardPaths>
@@ -52,18 +51,6 @@ DatabaseConnection* Database::connection() const
     return mConnection;
 }
 
-QString Database::test()
-{
-    if (mSqlDatabase.isOpen()) {
-        qDebug() << "db did open";
-        QSqlQuery query = mSqlDatabase.exec("select * from routes where id = 1");
-        qDebug() << query.first();
-        return query.value("name").toString();
-    }
-
-    return "";
-}
-
 void Database::setDatabaseName(const QString & name)
 {
     QString dbname = setupDatabase(name);
@@ -88,7 +75,6 @@ QVariant Database::exec(const QString & q)
    if (! isReady())
        return result;
 
-   qDebug() << "exec" << q;
    QSqlQuery query = mSqlDatabase.exec(q);
    QSqlError error = query.lastError();
    return ! error.isValid();

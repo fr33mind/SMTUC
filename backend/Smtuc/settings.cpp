@@ -1,6 +1,5 @@
 #include "settings.h"
 
-#include <QDebug>
 #include <QMetaProperty>
 #include <QQmlProperty>
 #include <QSqlQuery>

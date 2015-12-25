@@ -41,7 +41,6 @@ OTHER_FILES = qmldir
 }
 
 qmldir.files = qmldir
-testdb.files = testdb
 installPath = $${UBUNTU_CLICK_PLUGIN_PATH}/Smtuc
 qmldir.path = $$installPath
 target.path = $$installPath

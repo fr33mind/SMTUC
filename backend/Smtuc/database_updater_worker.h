@@ -83,7 +83,6 @@ private:
     void backupFavoriteRoutes(QSqlDatabase&);
     void restoreFavoriteRoutes(QSqlDatabase&);
 
-    //test function
     QByteArray loadData(const QString&);
 };
 

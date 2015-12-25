@@ -28,7 +28,6 @@ public:
     QSqlDatabase database() const;
     QString connectionName() const;
     DatabaseConnection* connection() const;
-    Q_INVOKABLE QString test();
     Q_INVOKABLE QVariant exec(const QString&);
     bool isReady() const;
 

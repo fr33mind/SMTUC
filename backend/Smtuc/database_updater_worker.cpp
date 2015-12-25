@@ -2,7 +2,6 @@
 
 #include <QSqlDatabase>
 #include <QNetworkReply>
-#include <QDebug>
 #include <QSqlDatabase>
 #include <QJsonDocument>
 #include <QJsonArray>
@@ -48,7 +47,6 @@ void DatabaseUpdaterWorker::loadSeasons(const QByteArray& data, QSqlDatabase& db
         return;
 
     QJsonArray seasons = doc.array();
-    qDebug() << "Season size:" << seasons.size();
 
     db.transaction();
 
@@ -107,15 +105,12 @@ void DatabaseUpdaterWorker::loadRoutes(const QByteArray& data, QSqlDatabase& db)
     backupFavoriteRoutes(db);
     db.transaction();
 
-    qDebug() << "Deleting tables...";
     db.exec("DELETE FROM routes");
     db.exec("UPDATE SQLITE_SEQUENCE SET seq = 0 WHERE name = 'routes'");
     db.exec("DELETE FROM stops");
     db.exec("UPDATE SQLITE_SEQUENCE SET seq = 0 WHERE name = 'stops'");
     db.exec("DELETE FROM route_stops");
     db.exec("UPDATE SQLITE_SEQUENCE SET seq = 0 WHERE name = 'route_stops'");
-
-    qDebug() << "Loading data";
 
     for(int i=0; i < routes.size(); i++) {
         QJsonValue value = routes.at(i);
@@ -174,8 +169,6 @@ void DatabaseUpdaterWorker::loadRouteStops(const QHash<int, QStringList> & route
     QSqlQuery query;
     QHash<QString, int> stop_name_ids = this->stopsHash();
 
-    qDebug() << "stop ids count" << stop_name_ids.size();
-
     if (stop_name_ids.isEmpty())
         return;
 
@@ -184,8 +177,6 @@ void DatabaseUpdaterWorker::loadRouteStops(const QHash<int, QStringList> & route
     QHashIterator<int, QStringList> it(routestops);
     while(it.hasNext()) {
         it.next();
-
-        qDebug() << "Loading stops for route" << it.key();
 
         QStringList stopnames = it.value();
         QList<int> route_stop_ids;
@@ -278,7 +269,6 @@ void DatabaseUpdaterWorker::loadRouteSchedules(const QByteArray& data, QSqlDatab
     QJsonArray schedules = doc.array();
     QJsonObject schedule;
     QHash<QString, int> stops = this->stopsHash();
-    qDebug() << "load route schedules";
 
     db.transaction();
 
@@ -289,11 +279,9 @@ void DatabaseUpdaterWorker::loadRouteSchedules(const QByteArray& data, QSqlDatab
 
     for(int i=0; i < schedules.size(); i++) {
         schedule = schedules.at(i).toObject();
-        qDebug() << "loading schedule" << schedule.value("id_h").toInt();
         schedule.insert("id_stop", stops.value(schedule.value("LOCAL").toString(), 0));
         loadRouteSchedule(schedule, db);
         loadRouteTimes(schedule, db);
-        //setMainStop();
     }
 
     db.commit();
@@ -362,7 +350,6 @@ void DatabaseUpdaterWorker::loadStops(QStringList stops , QSqlDatabase& db)
 
     stops.removeDuplicates();
 
-    qDebug() << "Loading" << stops.size() << "stops";
     QSqlQuery query = QSqlQuery("", db);
     query.prepare("INSERT INTO stops (name) VALUES(?)");
     query.addBindValue(stops);
@@ -374,8 +361,6 @@ void DatabaseUpdaterWorker::loadTickets(const QByteArray& data, QSqlDatabase& db
     QJsonDocument doc = QJsonDocument::fromJson(data);
     if (! doc.isArray())
         return;
-
-    qDebug() << "Loading tickets";
 
     db.transaction();
     db.exec("DELETE FROM tickets");
@@ -411,8 +396,6 @@ void DatabaseUpdaterWorker::loadTicketPrices(int count, QSqlDatabase& db)
     QJsonValue val;
     QJsonArray ticket_prices;
 
-    qDebug() << "Loading ticket prices";
-
     db.exec("DELETE FROM ticket_prices");
 
     for(int i=0; i < count; i++) {
@@ -424,7 +407,6 @@ void DatabaseUpdaterWorker::loadTicketPrices(int count, QSqlDatabase& db)
 
         ticket_prices = doc.array();
         for(int j=0; j < ticket_prices.size(); j++) {
-            qDebug() << "Loading tickets " << j;
             loadTicketPrice(ticket_prices.at(j), db);
         }
     }
@@ -455,8 +437,6 @@ void DatabaseUpdaterWorker::loadOutlets(const QByteArray& data, QSqlDatabase& db
     QJsonDocument doc = QJsonDocument::fromJson(data);
     if (! doc.isArray())
         return;
-
-    qDebug() << "Loading outlets";
 
     db.transaction();
     db.exec("DELETE FROM outlets");
@@ -518,22 +498,18 @@ void DatabaseUpdaterWorker::load()
 
     QByteArray data;
     data = mFileDownloader->data(QUrl(SEASONS_URL));
-    //data = this->loadData("~/epocas.json");
     loadSeasons(data, db);
     taskComplete();
 
     data = mFileDownloader->data(QUrl(ROUTES_URL));
-    //data = this->loadData("~/linhaspercurso.json");
     loadRoutes(data, db);
     taskComplete();
 
     data = mFileDownloader->data(QUrl(ROUTE_TIMES_URL));
-    //data = this->loadData("~/horariostempos.json");
     loadRouteSchedules(data, db);
     taskComplete();
 
     data = mFileDownloader->data(QUrl(TICKETS_URL));
-    //data = this->loadData("~/horariostempos.json");
     loadTickets(data, db);
     taskComplete();
 
@@ -571,8 +547,6 @@ void DatabaseUpdaterWorker::start()
 {
     if (mFileDownloader)
         mFileDownloader->deleteLater();
-
-    qDebug() << "Updating...";
 
     setStatusMessage(tr("Downloading..."));
     setTaskCount(5);
@@ -621,7 +595,6 @@ bool DatabaseUpdaterWorker::downloadTicketPrices()
     if (! mFileDownloader)
         return false;
 
-    qDebug() << "Downloading ticket prices...";
     QByteArray data = mFileDownloader->data(QUrl(TICKETS_URL));
     if (data.isEmpty())
         return false;
@@ -696,8 +669,6 @@ void DatabaseUpdaterWorker::loadVars(const QByteArray & data, QSqlDatabase & db)
     QJsonDocument doc = QJsonDocument::fromJson(data);
     if (! doc.isArray() || doc.isEmpty())
         return;
-
-    qDebug() << "Loading vars";
 
     db.transaction();
     db.exec("DELETE FROM vars");

@@ -4,7 +4,6 @@
 #include <QSqlError>
 #include <QSqlRecord>
 #include <QSqlField>
-#include <QDebug>
 
 SqlQueryModel::SqlQueryModel(QObject *parent) :
     QSqlQueryModel(parent)
@@ -47,7 +46,6 @@ void SqlQueryModel::setQuery(const QString & q)
     if (! db.isValid() || ! db.isOpen())
         return;
 
-    qDebug() << "setQuery" << q;
     QSqlQueryModel::setQuery(q, db);
     updateRoleNames();
 
