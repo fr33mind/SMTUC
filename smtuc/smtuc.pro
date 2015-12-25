@@ -19,8 +19,8 @@ UI_FILES +=  ui/StopsPopup.qml \
     ui/UpdateDialog.qml \
     ui/AboutPage.qml
 
-QML_FILES += $$files(*.qml,true) \
-             $$files(*.js,true)
+#QML_FILES += $$files(*.qml,true) \
+#             $$files(*.js,true)
 
 CONF_FILES += smtuc.apparmor \
               smtuc.desktop \
