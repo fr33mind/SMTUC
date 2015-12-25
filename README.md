@@ -1,2 +1,2 @@
 # SMTUC
-Unofficial SMTUC application for Ubuntu Phone.
+Unofficial SMTUC application for Ubuntu Touch.

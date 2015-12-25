@@ -6,7 +6,7 @@ Page {
     id: aboutPage
     property string name: "SMTUC"
     property string version: "1.0"
-    property string description: i18n.tr("Unofficial SMTUC application for Ubuntu Phone.")
+    property string description: i18n.tr("Unofficial SMTUC application for Ubuntu Touch.")
     property string author: "Carlos Pais"
     property string repositoryUrl: "https://github.com/fr33mind/SMTUC"
 

@@ -48,8 +48,8 @@ msgid "About"
 msgstr "Acerca"
 
 #: /home/carlos/Projectos/SMTUC/smtuc/ui/AboutPage.qml:9
-msgid "Unofficial SMTUC application for Ubuntu Phone."
-msgstr "Aplicação não oficial dos SMTUC para Ubuntu Phone."
+msgid "Unofficial SMTUC application for Ubuntu Touch."
+msgstr "Aplicação não oficial dos SMTUC para Ubuntu Touch."
 
 #: /home/carlos/Projectos/SMTUC/smtuc/ui/AboutPage.qml:85
 msgid "Released under the GNU GPLv3."
