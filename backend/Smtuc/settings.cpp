@@ -40,6 +40,7 @@ bool Settings::load()
     QSqlField nameField;
     QSqlField valueField;
     QString name;
+    QVariantMap properties = this->properties();
 
     while(query.next()) {
         QSqlRecord record = query.record();
@@ -47,7 +48,8 @@ bool Settings::load()
         valueField = record.field("value");
         name = nameField.value().toString();
 
-        setProperty(name.toLatin1().data(), valueField.value());
+        if (! properties.contains(name))
+            setProperty(name.toLatin1().data(), valueField.value());
     }
 
     return true;
@@ -232,5 +234,6 @@ bool Settings::deleteOne(const QString & key)
 
 void Settings::onDatabaseDestroyed()
 {
+    save();
     mDatabase = 0;
 }
