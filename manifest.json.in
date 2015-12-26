@@ -1,6 +1,6 @@
 {
     "name": "smtuc.freemind",
-    "description": "Unofficial SMTUC application for Ubuntu Phone",
+    "description": "Unofficial SMTUC application for Ubuntu Touch",
     "architecture": "@CLICK_ARCH@",
     "title": "SMTUC",
     "hooks": {
