@@ -16,7 +16,7 @@ class Settings : public QObject, public QQmlParserStatus
 
 public:
     explicit Settings(QObject *parent = 0);
-    Settings(Database *db, QObject *parent = 0);
+    Settings(Database *db, bool autoSave=false, QObject *parent = 0);
     virtual ~Settings();
     void setDatabase(Database*);
     Database* database() const;

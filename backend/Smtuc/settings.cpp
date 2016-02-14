@@ -10,15 +10,15 @@
 Settings::Settings(QObject *parent) :
     QObject(parent)
 {
-    mDatabase = 0;
+    init();
 }
 
-Settings::Settings(Database* db, QObject *parent) :
+Settings::Settings(Database* db, bool autoSave, QObject *parent) :
     QObject(parent)
 {
-    mDatabase = 0;
-    setDatabase(db);
     init();
+    setDatabase(db);
+    setAutoSave(autoSave);
     load();
 }
 
@@ -29,6 +29,8 @@ Settings::~Settings()
 
 void Settings::init()
 {
+    mDatabase = 0;
+    mAutoSave = false;
 }
 
 bool Settings::load()
@@ -61,7 +63,6 @@ void Settings::classBegin()
 
 void Settings::componentComplete()
 {
-    init();
     load();
 
     //save to DB the declared properties in QML
