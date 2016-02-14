@@ -6,6 +6,10 @@
 #include <QSqlError>
 #include <QSqlRecord>
 #include <QSqlField>
+#include <QSet>
+#include "settings_hub.h"
+
+SettingsHub mSettingsHub;
 
 Settings::Settings(QObject *parent) :
     QObject(parent)
@@ -25,12 +29,14 @@ Settings::Settings(Database* db, bool autoSave, QObject *parent) :
 Settings::~Settings()
 {
     save();
+    mSettingsHub.remove(this);
 }
 
 void Settings::init()
 {
     mDatabase = 0;
     mAutoSave = false;
+    mSettingsHub.add(this);
 }
 
 bool Settings::load()
@@ -162,9 +168,13 @@ bool Settings::_saveOne(const QString & key, const QVariant & value, const QSqlD
 
 void Settings::setValue(const QString & key, const QVariant & value)
 {
+    if (this->value(key) == value)
+        return;
+
     setProperty(key.toLatin1().data(), value);
     if (autoSave())
         saveOne(key, value);
+    emit valueChanged(key, value);
 }
 
 QVariant Settings::value(const QString & key, const QVariant & defaultValue) const

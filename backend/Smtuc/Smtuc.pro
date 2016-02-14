@@ -17,7 +17,8 @@ SOURCES += \
     sqlquerymodel.cpp \
     settings.cpp \
     database_connection.cpp \
-    network_reply_timeout.cpp
+    network_reply_timeout.cpp \
+    settings_hub.cpp
 
 HEADERS += \
     backend.h \
@@ -28,7 +29,8 @@ HEADERS += \
     sqlquerymodel.h \
     settings.h \
     database_connection.h \
-    network_reply_timeout.h
+    network_reply_timeout.h \
+    settings_hub.h
 
 OTHER_FILES = qmldir
 

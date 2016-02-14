@@ -37,6 +37,7 @@ public:
     QVariantMap properties() const;
 
 signals:
+    void valueChanged(const QString&, const QVariant&);
 
 private slots:
     void onDatabaseDestroyed();
