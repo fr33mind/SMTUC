@@ -118,3 +118,15 @@ void SqlQueryModel::onDatabaseDestroyed()
 {
     mDatabase = 0;
 }
+
+QString SqlQueryModel::normalize(const QString & text)
+{
+    QString t = text.toLower();
+    t.replace("a", "[aáàãâ]");
+    t.replace("e", "[eéèê]");
+    t.replace("i", "[iíì]");
+    t.replace("o", "[oóòõô]");
+    t.replace("u", "[uúù]");
+    t.replace("c", "[cç]");
+    return t;
+}

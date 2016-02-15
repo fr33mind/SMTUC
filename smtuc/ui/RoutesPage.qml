@@ -20,7 +20,8 @@ Page {
 
     function getStopIds(text)
     {
-        searchModel.query = "select * from stops where name like '%"+text+"%'";
+        var normText = searchModel.normalize(text);
+        searchModel.query = "select * from stops where lower(name) glob '*"+normText+"*'";
         var stops = [];
         for(var i=0; i < searchModel.rowCount; i++) {
             stops.push(searchModel.recordField(i, "id"));
@@ -49,8 +50,9 @@ Page {
         var filteredIds = [];
 
         if (text.length) {
-            searchModel.query = "select * from routes where name like '%"+text+"%' or " +
-                                " desc like '%"+text+"%' ";
+            var normText = searchModel.normalize(text);
+            searchModel.query = "select * from routes where lower(name) glob '*"+normText+"*' or " +
+                                " lower(desc) glob '*"+normText+"*' ";
 
             for(var i=0; i < searchModel.rowCount; i++) {
                 filteredIds.push(searchModel.recordField(i, "id"));

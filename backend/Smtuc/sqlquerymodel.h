@@ -20,6 +20,7 @@ public:
     Q_INVOKABLE QVariantMap rowDataMap(int) const;
     virtual QVariant data(const QModelIndex & item, int role = Qt::DisplayRole) const;
     virtual QHash<int,QByteArray> roleNames() const;
+    Q_INVOKABLE QString normalize(const QString&);
 
 signals:
     void rowCountChanged();
