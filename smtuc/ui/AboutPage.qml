@@ -5,7 +5,7 @@ import QtQuick.Layouts 1.1
 Page {
     id: aboutPage
     property string name: "SMTUC"
-    property string version: "1.0"
+    property string version: "1.1"
     property string description: i18n.tr("Unofficial SMTUC application for Ubuntu Touch.")
     property string author: "Carlos Pais"
     property string repositoryUrl: "https://github.com/fr33mind/SMTUC"
@@ -75,7 +75,7 @@ Page {
 
                 Label {
                     id: copyrightLabel
-                    text: "Copyright (c) 2015 " + aboutPage.author
+                    text: "Copyright (c) 2015-2016 " + aboutPage.author
                     anchors.horizontalCenter: parent.horizontalCenter
                     font.pixelSize: FontUtils.sizeToPixels("small")
                 }
